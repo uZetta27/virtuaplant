@@ -23,15 +23,21 @@ log.setLevel(logging.INFO)
 #####################################
 # Never stop code
 #####################################
-client = Client(PLC_SERVER_IP, port=PLC_SERVER_PORT)
+client1 = Client(PLC_SERVER_IP, port=PLC_SERVER_PORT)
+client2 = Client(CONTACT_SERVER_IP, port=CONTACT_SERVER_PORT)
+client3 = Client(LEVEL_SERVER_IP, port=LEVEL_SERVER_PORT)
 
 try:
-    client.connect()
+    client1.connect()
+    client2.connect()
+    client3.connect()
     while True:
-        rq = client.write(PLC_TAG_RUN, 1) 	# Run Plant, Run!
-        rq = client.write(PLC_TAG_CONTACT, 0) 	# Contact Sensor
-        rq = client.write(PLC_TAG_LEVEL, 1) 	# Level Sensor
+        rq = client1.write(PLC_TAG_RUN, 1) 	# Run Plant, Run!
+        rq = client2.write(CONTACT_TAG_SENSOR, 0) 	# Contact Sensor
+        rq = client3.write(LEVEL_TAG_SENSOR, 1) 	# Level Sensor
 except KeyboardInterrupt:
-    client.close()
+    client1.close()
+    client2.close()
+    client3.close()
 except ConnectionException:
     print "Unable to connect / Connection lost"
